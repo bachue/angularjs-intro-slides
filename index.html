@@ -270,6 +270,46 @@ aMailServices.controller('DetailController', function($scope, $routeParams) {
 						</aside>
 					</section>
 				</section>
+				<section>
+					<section>
+						<h2>Data from Server</h2>
+						<h4><a href="/examples/6/index.html" target="_blank">Run</a>
+					</section>
+					<section>
+						<pre><code class="html" style="max-height: 600px;">
+&lt;html ng-app='ShoppingModule'&gt;
+    &lt;head&gt;&lt;title&gt;Your Shopping Cart&lt;/title&gt;&lt;/head&gt;
+    &lt;body ng-controller='ShoppingController'&gt;
+        &lt;h1&gt;Shop!&lt;/h1&gt;
+        &lt;table&gt;
+            &lt;tr ng-repeat='item in items'&gt;
+                &lt;td&gt;{{item.title}}&lt;/td&gt;
+                &lt;td&gt;{{item.description}}&lt;/td&gt;
+                &lt;td&gt;{{item.price | currency}}&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/table&gt;
+        &lt;script src='../js/angular.min.js'&gt;&lt;/script&gt;
+        &lt;script type="text/javascript"&gt;
+            var ShoppingModule = angular.module('ShoppingModule', []);
+            ShoppingModule.factory('Items', function($http) {
+                return {
+                    query: function(callback) {
+                        $http.get('/shopping/items').success(callback);
+                    }
+                };
+            });
+            ShoppingModule.controller('ShoppingController', function($scope, Items) {
+                Items.query(function(items) { $scope.items = items; });
+            });
+        &lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+						</code></pre>
+						<aside class="notes">
+							$http, promise, Factory
+						</aside>
+					</section>
+				</section>
 			</div>
 		</div>
 
@@ -292,8 +332,6 @@ aMailServices.controller('DetailController', function($scope, $routeParams) {
 					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
 				]
 			});
-
 		</script>
-
 	</body>
 </html>
