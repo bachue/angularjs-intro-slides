@@ -188,6 +188,45 @@ aMailServices.controller('DetailController', function($scope, $routeParams) {
 						</aside>
 					</section>
 				</section>
+				<section>
+					<section>
+						<h2>Filter</h2>
+						<h4><a href="/examples/4/hello.html" target="_blank">Run</a>
+					</section>
+					<section>
+						<pre><code class="html" style="max-height: 600px;">
+&lt;html ng-app="HomeModule"&gt;
+    &lt;head&gt;
+        &lt;script src="../js/angular.min.js"&gt;&lt;/script&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div ng-controller='HelloController'&gt;
+            &lt;p ng-bind="page.heading | titleCase"&gt;&lt;/p&gt;
+            &lt;input ng-model="page.heading" /&gt;
+        &lt;/div&gt;
+        &lt;script type="text/javascript"&gt;
+            var homeModule = angular.module('HomeModule', []);
+            homeModule.controller('HelloController', function($scope) {
+                $scope.page = {heading: 'behold the majesty of your page title'};
+            });
+            homeModule.filter('titleCase', function() {
+                return function(input) {
+                    var words = input.split(' ');
+                    for (var i = 0; i &lt; words.length; i++) {
+                        words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1);
+                    };
+                    return words.join(' ');
+                };
+            });
+        &lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+						</code></pre>
+						<aside class="notes">
+							user defined filter, ng-bind
+						</aside>
+					</section>
+				</section>
 			</div>
 		</div>
 
