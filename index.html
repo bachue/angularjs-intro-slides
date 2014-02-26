@@ -95,7 +95,7 @@ function HelloController($scope) {
 &lt;/html&gt;
 						</code></pre>
 						<aside class="notes">
-							Binding expression, Functions, add or remove items, ng-repeat, $index, Filters
+							Binding expression, Functions, add or remove items, ng-click, ng-repeat, $index, Filters
 						</aside>
 					</section>
 				</section>
@@ -190,7 +190,7 @@ aMailServices.controller('DetailController', function($scope, $routeParams) {
 				</section>
 				<section>
 					<section>
-						<h2>Filter</h2>
+						<h2>Capitalize</h2>
 						<h4><a href="/examples/4/hello.html" target="_blank">Run</a>
 					</section>
 					<section>
@@ -224,6 +224,49 @@ aMailServices.controller('DetailController', function($scope, $routeParams) {
 						</code></pre>
 						<aside class="notes">
 							user defined filter, ng-bind
+						</aside>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Form</h2>
+						<h4><a href="/examples/5/index.html" target="_blank">Run</a>
+					</section>
+					<section>
+						<pre><code class="html" style="max-height: 600px;">
+&lt;html ng-app='app'&gt;
+    &lt;head&gt;
+        &lt;title&gt;Form&lt;/title&gt;
+        &lt;style&gt;
+            input.ng-invalid { color: red; }
+            input.ng-valid { color: green; }
+        &lt;/style&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;h1&gt;Sign Up&lt;/h1&gt;
+        &lt;form name='addUserForm' ng-controller='AddUserController'&gt;
+            &lt;div ng-show='message'&gt;{{message}}&lt;/div&gt;
+            &lt;div&gt;*First name: &lt;input ng-model='user.first' name='firstName' required ng-pattern="/^[A-Z][a-z]+$/"&gt;&lt;/div&gt;
+            &lt;div&gt;*Last name: &lt;input ng-model='user.last' required ng-pattern="/^[A-Z][a-z]+(\s[A-Z][a-z]*)*$/"&gt;&lt;/div&gt;
+            &lt;div&gt;*Email: &lt;input type='email' ng-model='user.email' required&gt;&lt;/div&gt;
+            &lt;div&gt;&nbsp;Age: &lt;input type='number' ng-model='user.age' ng-maxlength='3' ng-minlength='1' min="1"&gt;&lt;/div&gt;
+            &lt;div&gt;&lt;button ng-click='addUser()' ng-disabled='!addUserForm.$valid'&gt;Submit&lt;/button&gt;&lt;/div&gt;
+        &lt;/form&gt;
+        &lt;script type="text/javascript" src='../js/angular.min.js'&gt;&lt;/script&gt;
+        &lt;script type="text/javascript"&gt;
+            var appModule = angular.module('app', []);
+            appModule.controller('AddUserController', function($scope) {
+                $scope.message = '';
+                $scope.addUser = function() {
+                    $scope.message = 'Thanks, ' + $scope.user.first + ', we added you!';
+                };
+            });
+        &lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+						</code></pre>
+						<aside class="notes">
+							validator, ng-show, ng-if
 						</aside>
 					</section>
 				</section>

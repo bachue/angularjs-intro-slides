@@ -1,0 +1,30 @@
+<html ng-app='app'>
+    <head>
+        <title>Form</title>
+        <style>
+            input.ng-invalid { color: red; }
+            input.ng-valid { color: green; }
+        </style>
+    </head>
+    <body>
+        <h1>Sign Up</h1>
+        <form name='addUserForm' ng-controller='AddUserController'>
+            <div ng-show='message'>{{message}}</div>
+            <div>*First name: <input ng-model='user.first' name='firstName' required ng-pattern="/^[A-Z][a-z]+$/"></div>
+            <div>*Last name: <input ng-model='user.last' required ng-pattern="/^[A-Z][a-z]+(\s[A-Z][a-z]*)*$/"></div>
+            <div>*Email: <input type='email' ng-model='user.email' required></div>
+            <div>&nbsp;Age: <input type='number' ng-model='user.age' ng-maxlength='3' ng-minlength='1' min="1"></div>
+            <div><button ng-click='addUser()' ng-disabled='!addUserForm.$valid'>Submit</button></div>
+        </form>
+        <script type="text/javascript" src='../js/angular.min.js'></script>
+        <script type="text/javascript">
+            var appModule = angular.module('app', []);
+            appModule.controller('AddUserController', function($scope) {
+                $scope.message = '';
+                $scope.addUser = function() {
+                    $scope.message = 'Thanks, ' + $scope.user.first + ', we added you!';
+                };
+            });
+        </script>
+    </body>
+</html>
