@@ -95,7 +95,96 @@ function HelloController($scope) {
 &lt;/html&gt;
 						</code></pre>
 						<aside class="notes">
-							Binding expression, Functions, $index, Filters
+							Binding expression, Functions, add or remove items, ng-repeat, $index, Filters
+						</aside>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>A-Mail</h2>
+						<h4><a href="/examples/3/index.html" target="_blank">Run</a></h4>
+					</section>
+					<section>
+						<h6>index.html</h6>
+						<pre><code class="html">
+&lt;html ng-app='AMail'&gt;
+    &lt;head&gt;
+        &lt;script src="../../angular.js"&gt;&lt;/script&gt;
+        &lt;script src="../../angular-route.js"&gt;&lt;/script&gt;
+        &lt;script src='controller.js'&gt;&lt;/script&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;h1&gt;A-Mail&lt;/h1&gt;
+        &lt;div ng-view&gt;&lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+						</code></pre>
+						<aside class="notes">
+							simple index page, ng-view
+						</aside>
+					</section>
+					<section>
+						<h6>controller.js</h6>
+						<pre><code class="javascript" style="max-height: 600px;">
+var aMailServices = angular.module('AMail', ['ngRoute']);
+aMailServices.config(function($routeProvider) {
+    $routeProvider.
+        when('/', {controller: 'ListController', templateUrl: 'list.html'}).
+        when('/view/:id', {controller: 'DetailController', templateUrl: 'detail.html'}).
+        otherwise({redirectTo: '/'});
+});
+var messages = [{
+    id: 0, sender: 'jean@somecompany.com', subject: 'Hi there, old friend',
+    date: 'Dec 7, 2013 12:32:00', recipients: ['greg@somecompany.com'],
+    message: 'Hey, we should get together for lunch sometime and catch up. There are many things we should collaborate on this year.'
+}, {
+    id: 1, sender: 'maria@somecompany.com', subject: 'Where did you leave my laptop?', date: 'Dec 7, 2013 8:15:12', recipients: ['greg@somecompany.com'],
+    message: 'I thought you were going to put it in my desk drawer. But it does not seem to be there.'
+}, {
+    id: 2, sender: 'bill@somecompany.com', subject: 'Lost python', date: 'Dec 6, 2013 20:35:02', recipients: ['greg@somecompany.com'],
+    message: 'Nobody panic, but my pet python is missing from her cage. She doesn\'t move too fast, so just call me if you see her.'
+}];
+aMailServices.controller('ListController', function($scope) {
+    $scope.messages = messages;
+});
+aMailServices.controller('DetailController', function($scope, $routeParams) {
+    $scope.message = messages[$routeParams.id];
+});
+						</code></pre>
+						<aside class="notes">
+							Module, ngRoute, config(actually run after all controller are defined), $routeProvider, get angular variable, multiple views &amp; templates, multiple controller, $routeParams
+						</aside>
+					</section>
+					<section>
+						<h6>detail.html</h6>
+						<pre><code class="html">
+&lt;div&gt;&lt;strong&gt;Subject:&lt;/strong&gt; {{message.subject}} &lt;/div&gt;
+&lt;div&gt;&lt;strong&gt;Sender:&lt;/strong&gt; {{message.sender}} &lt;/div&gt;
+&lt;div&gt;&lt;strong&gt;Date:&lt;/strong&gt; {{message.date}} &lt;/div&gt;
+&lt;div&gt;
+    &lt;strong&gt;To:&lt;/strong&gt;
+    &lt;span ng-repeat='recipient in message.recipients'&gt; {{recipient}} &lt;/span&gt;
+&lt;/div&gt;
+&lt;div&gt;{{message.message}}&lt;/div&gt;
+&lt;a ng-href='#/'&gt;Back to message list&lt;/a&gt;
+						</code></pre>
+						<h6>list.html</h6>
+						<pre><code class="html">
+&lt;table&gt;
+    &lt;tr&gt;
+        &lt;td&gt;&lt;strong&gt;Sender&lt;/strong&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;strong&gt;Subject&lt;/strong&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;strong&gt;Date&lt;/strong&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr ng-repeat='message in messages'&gt;
+        &lt;td&gt;{{message.sender}}&lt;/td&gt;
+        &lt;td&gt;&lt;a ng-href='#/view/{{message.id}}'&gt;{{message.subject}}&lt;/a&gt;&lt;/td&gt;
+        &lt;td&gt;{{message.date}}&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+						</code></pre>
+						<aside class="notes">
+							ng-href
 						</aside>
 					</section>
 				</section>
