@@ -25,6 +25,7 @@
 				<section>
 					<h1>AngularJS</h1>
 					<h3>a introduction</h3>
+					<p><small>by <a href="https://twitter.com/iBachue">Bachue</a></small></p>
 				</section>
 
 				<section>
@@ -191,7 +192,7 @@ aMailServices.controller('DetailController', function($scope, $routeParams) {
 				<section>
 					<section>
 						<h2>Capitalize</h2>
-						<h4><a href="/examples/4/hello.html" target="_blank">Run</a>
+						<h4><a href="/examples/4/hello.html" target="_blank">Run</a></h4>
 					</section>
 					<section>
 						<pre><code class="html" style="max-height: 700px;">
@@ -230,7 +231,7 @@ aMailServices.controller('DetailController', function($scope, $routeParams) {
 				<section>
 					<section>
 						<h2>Form</h2>
-						<h4><a href="/examples/5/index.html" target="_blank">Run</a>
+						<h4><a href="/examples/5/index.html" target="_blank">Run</a></h4>
 					</section>
 					<section>
 						<pre><code class="html" style="max-height: 700px;">
@@ -273,7 +274,7 @@ aMailServices.controller('DetailController', function($scope, $routeParams) {
 				<section>
 					<section>
 						<h2>Rating</h2>
-						<h4><a href="/examples/6/index.html" target="_blank">Run</a>
+						<h4><a href="/examples/6/index.html" target="_blank">Run</a></h4>
 					</section>
 					<section>
 						<pre><code class="html" style="max-height: 700px;">
@@ -342,7 +343,7 @@ aMailServices.controller('DetailController', function($scope, $routeParams) {
 				<section>
 					<section>
 						<h2>Fetching Data</h2>
-						<h4><a href="/examples/7/index.html" target="_blank">Run</a>
+						<h4><a href="/examples/7/index.html" target="_blank">Run</a></h4>
 					</section>
 					<section>
 						<pre><code class="html" style="max-height: 700px;">
@@ -382,7 +383,7 @@ aMailServices.controller('DetailController', function($scope, $routeParams) {
 				<section>
 					<section>
 						<h2>Manipulating Data</h2>
-						<h4><a href="/examples/8/index.html" target="_blank">Run</a>
+						<h4><a href="/examples/8/index.html" target="_blank">Run</a></h4>
 					</section>
 					<section>
 						<h6>index.html</h6>
@@ -588,6 +589,52 @@ define(['controllers/controllers', 'services/user_service'], function(controller
     });
 });
 						</code></pre>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Extensions</h2>
+					</section>
+					<section>
+						<h2>ui-router</h2>
+						<h4>
+							<a href="/examples/ui-router/index.html" target="_blank">Run</a>
+							/
+							<a href="https://github.com/angular-ui/ui-router" target="_blank">Github</a>
+						</h4>
+					</section>
+					<section>
+						<h2>Restangular</h2>
+						<pre><code class="javascript">
+Restangular.one('users').getList()  // GET: /users
+	.then(function(users) {
+	  // returns a list of users
+	  $scope.user = users[0];   // first Restangular obj in list: { id: 123 }
+	});
+// Restangular objects are self-aware and know how to make their own restful requests
+$scope.user.getList('cars');    // GET: /users/123/cars
+
+// You can also use your own custom methods on Restangular objects
+$scope.user.sendMessage();  // POST: /users/123/sendMessage
+
+// Chain methods together to easily build complex requests
+$scope.user.one('messages', 123).one('from', 123).getList('unread');
+// GET: /user/123/messages/123/from/123/unread
+						</code></pre>
+						<a href="https://github.com/mgonto/restangular" target="_blank">Github</a>
+					</section>
+					<section>
+						<h2>Bindonce</h2>
+						<pre><code class="html">
+&lt;ul&gt;
+    &lt;li bindonce ng-repeat="person in Persons"&gt;
+        &lt;a bo-href="'#/people/' + person.id"&gt;&lt;img bo-src="person.imageUrl"&gt;&lt;/a&gt;
+        &lt;a bo-href="'#/people/' + person.id" bo-text="person.name"&gt;&lt;/a&gt;
+        &lt;p bo-class="{'cycled':person.generated}" bo-html="person.description"&gt;&lt;/p&gt;
+    &lt;/li&gt;
+&lt;/ul&gt;
+						</code></pre>
+						<a href="https://github.com/Pasvaz/bindonce" target="_blank">Github</a>
 					</section>
 				</section>
 				<section>
