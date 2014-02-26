@@ -109,8 +109,8 @@ function HelloController($scope) {
 						<pre><code class="html">
 &lt;html ng-app='AMail'&gt;
     &lt;head&gt;
-        &lt;script src="../../angular.js"&gt;&lt;/script&gt;
-        &lt;script src="../../angular-route.js"&gt;&lt;/script&gt;
+        &lt;script src="../js/angular.min.js"&gt;&lt;/script&gt;
+        &lt;script src="../js/angular-route.min.js"&gt;&lt;/script&gt;
         &lt;script src='controller.js'&gt;&lt;/script&gt;
     &lt;/head&gt;
     &lt;body&gt;
@@ -341,7 +341,7 @@ aMailServices.controller('DetailController', function($scope, $routeParams) {
 				</section>
 				<section>
 					<section>
-						<h2>Data from Server</h2>
+						<h2>Fetching Data</h2>
 						<h4><a href="/examples/7/index.html" target="_blank">Run</a>
 					</section>
 					<section>
@@ -378,6 +378,220 @@ aMailServices.controller('DetailController', function($scope, $routeParams) {
 							$http, promise, Factory
 						</aside>
 					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Manipulating Data</h2>
+						<h4><a href="/examples/8/index.html" target="_blank">Run</a>
+					</section>
+					<section>
+						<h6>index.html</h6>
+						<pre><code class="html">
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;Test Resource in Angular&lt;/title&gt;
+        &lt;meta charset='utf-8' /&gt;
+        &lt;script type='text/javascript' src='../js/require.min.js' defer async='true' data-main='scripts/main'&gt;&lt;/script&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div ng-view&gt;&lt;/div&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+						</code></pre>
+						<aside class="notes">
+							requirejs
+						</aside>
+					</section>
+					<section>
+						<h6>main.js</h6>
+						<pre><code class="javascript" style="max-height: 700px;">
+require.config({
+    paths: {
+        angular: '../../js/angular.min',
+        angular_route: '../../js/angular-route.min',
+        angular_resource: '../../js/angular-resource.min',
+        jquery: '../../js/jquery.min',
+        domReady: '../../js/domReady.min'
+    },
+    shim: {
+        angular: {
+            deps: ['jquery'],
+            exports: 'angular'
+        },
+        angular_resource: ['angular'],
+        angular_route: ['angular']
+    }
+});
+require(['angular', 'app', 'domReady', 'jquery', 'angular_route',
+    'services/user_service',
+    'controllers/root_controller', 'controllers/show_controller', 'controllers/new_controller', 'controllers/edit_controller'],
+    function(angular, app, domReady, $) {
+        app.config(function($routeProvider) {
+            $routeProvider.when('/', {
+                templateUrl: 'views/root.html',
+                controller: 'RootController',
+                resolve: {
+                    users: function(UsersLoader) {
+                        return UsersLoader();
+                    }
+                }
+            }).when('/new', {
+                templateUrl: 'views/new.html',
+                controller: 'NewController'
+            }).when('/edit/:id', {
+                templateUrl: 'views/edit.html',
+                controller: 'EditController',
+                resolve: {
+                    user: function(UserLoader) {
+                        return UserLoader();
+                    }
+                }
+            }).when('/:id', {
+                templateUrl: 'views/show.html',
+                controller: 'ShowController',
+                resolve: {
+                    user: function(UserLoader) {
+                        return UserLoader();
+                    }
+                }
+            }).otherwise({
+                redirectTo: '/'
+            });
+        });
+        domReady(function() {
+            angular.bootstrap(document, ['MyApp']);
+            $('html').addClass('ng-app: MyApp');
+        });
+});
+						</code></pre>
+						<aside class="notes">
+							requirejs, domReady, angularjs bootstrap
+						</aside>
+					</section>
+					<section>
+						<h6>app.js</h6>
+						<pre><code class="javascript">
+define(['angular', 'angular_route', 'controllers/controllers', 'services/services'],
+    function(angular) {
+    return angular.module('MyApp', ['ngRoute', 'controllers', 'services']);
+});
+						</code></pre>
+						<h6>controllers.js</h6>
+						<pre><code class="javascript">
+define(['angular'], function(angular) {
+    return angular.module('controllers', []);
+});
+						</code></pre>
+						<h6>services.js</h6>
+						<pre><code class="javascript">
+define(['angular', 'angular_resource'], function(angular) {
+    return angular.module('services', ['ngResource']);
+});
+						</code></pre>
+						<aside class="notes">
+							module inheritance
+						</aside>
+					</section>
+					<section>
+						<h6>user_service.js</h6>
+						<pre><code class="javascript" style="max-height: 700px;">
+define(['services/services'], function(services) {
+    services.factory('User', function($resource) {
+        return $resource('/users/:id', {id: '@id'});
+    });
+
+    services.factory('UsersLoader', function(User, $q) {
+        return function() {
+            var delay = $q.defer();
+            User.query(function(users) {
+                delay.resolve(users);
+            }, function() {
+                delay.reject('Unable to list all users');
+            });
+            return delay.promise;
+        };
+    });
+
+    services.factory('UserLoader', function(User, $q, $route) {
+        return function() {
+            var delay = $q.defer();
+            User.get({id: $route.current.params.id}, function(user) {
+                delay.resolve(user);
+            }, function() {
+                delay.reject('Unable to fetch user ' + $route.current.params.id);
+            });
+            return delay.promise;
+        };
+    });
+});
+						</code></pre>
+						<aside class="notes">
+							$resource, promise
+						</aside>
+					</section>
+					<section>
+						<h6>root_controller.js</h6>
+						<pre><code class="javascript">
+define(['controllers/controllers', 'services/user_service'], function(controllers) {
+    controllers.controller('RootController', function($scope, users) {
+        $scope.users = users;
+    });
+});
+						</code></pre>
+						<h6>new_controller.js</h6>
+						<pre><code class="javascript">
+define(['controllers/controllers', 'services/user_service'], function(controllers) {
+    controllers.controller('NewController', function($scope, $location, User) {
+        $scope.user = new User();
+        $scope.save = function() {
+            $scope.user.$save({
+                name: $scope.user.name
+            }, function(user) {
+                $location.path('/' + user.id);
+            });
+        };
+    });
+});
+						</code></pre>
+						<aside class="notes">
+							$location
+						</aside>
+					</section>
+					<section>
+						<h6>show_controllers.js</h6>
+						<pre><code class="javascript">
+define(['controllers/controllers', 'services/user_service'], function(controllers) {
+    controllers.controller('ShowController', function($scope, user) {
+        $scope.user = user;
+    });
+});
+						</code></pre>
+						<h6>edit_controller.js</h6>
+						<pre><code class="javascript">
+define(['controllers/controllers', 'services/user_service'], function(controllers) {
+    controllers.controller('EditController', function($scope, $location, user) {
+        $scope.user = user;
+        $scope.save = function() {
+            $scope.user.$save({
+                id: $scope.user.id,
+                name: $scope.user.name
+            }, function(user) {
+                $location.path('/' + user.id);
+            });
+        };
+        $scope.remove = function() {
+            $scope.user.$remove(function() {
+                $location.path('/');
+            });
+            delete $scope.user;
+        };
+    });
+});
+						</code></pre>
+					</section>
+				</section>
+				<section>
+					<h1>Thanks</h1>
 				</section>
 			</div>
 		</div>
