@@ -66,7 +66,7 @@ function HelloController($scope) {
 						<h4><a href="/examples/2/index.html" target="_blank">Run</a></h4>
 					</section>
 					<section>
-						<pre><code class="html" style="max-height: 600px;">
+						<pre><code class="html" style="max-height: 700px;">
 &lt;html ng-app&gt;
     &lt;head&gt;&lt;title&gt;Your Shopping Cart&lt;/title&gt;&lt;/head&gt;
     &lt;body ng-controller='CartController'&gt;
@@ -125,7 +125,7 @@ function HelloController($scope) {
 					</section>
 					<section>
 						<h6>controller.js</h6>
-						<pre><code class="javascript" style="max-height: 600px;">
+						<pre><code class="javascript" style="max-height: 700px;">
 var aMailServices = angular.module('AMail', ['ngRoute']);
 aMailServices.config(function($routeProvider) {
     $routeProvider.
@@ -194,7 +194,7 @@ aMailServices.controller('DetailController', function($scope, $routeParams) {
 						<h4><a href="/examples/4/hello.html" target="_blank">Run</a>
 					</section>
 					<section>
-						<pre><code class="html" style="max-height: 600px;">
+						<pre><code class="html" style="max-height: 700px;">
 &lt;html ng-app="HomeModule"&gt;
     &lt;head&gt;
         &lt;script src="../js/angular.min.js"&gt;&lt;/script&gt;
@@ -233,7 +233,7 @@ aMailServices.controller('DetailController', function($scope, $routeParams) {
 						<h4><a href="/examples/5/index.html" target="_blank">Run</a>
 					</section>
 					<section>
-						<pre><code class="html" style="max-height: 600px;">
+						<pre><code class="html" style="max-height: 700px;">
 &lt;html ng-app='app'&gt;
     &lt;head&gt;
         &lt;title&gt;Form&lt;/title&gt;
@@ -272,11 +272,80 @@ aMailServices.controller('DetailController', function($scope, $routeParams) {
 				</section>
 				<section>
 					<section>
-						<h2>Data from Server</h2>
+						<h2>Rating</h2>
 						<h4><a href="/examples/6/index.html" target="_blank">Run</a>
 					</section>
 					<section>
-						<pre><code class="html" style="max-height: 600px;">
+						<pre><code class="html" style="max-height: 700px;">
+&lt;html ng-app='RankingApp'&gt;
+    &lt;head&gt;
+        &lt;style&gt;
+            .rating { color: #a9a9a9; margin: 0; padding: 0; }
+            ul.rating { display: inline-block; }
+            .rating li { list-style-type: none; display: inline-block; padding: 1px; text-align: center; font-weight: bold; cursor: pointer; }
+            .rating .filled { color: #21568b; }
+        &lt;/style&gt;
+        &lt;script src='../js/angular.min.js'&gt;&lt;/script&gt;
+    &lt;/head&gt;
+    &lt;body ng-controller='RankingController'&gt;
+        &lt;h1&gt;Rating is {{rating}}&lt;/h1&gt;
+        &lt;p&gt;
+            &lt;h3&gt;Clickable Rating&lt;/h3&gt;
+            &lt;div fundoo-rating rating-value="rating" max="10" on-rating-selected="saveRatingToServer(rating)"&gt;&lt;/div&gt;
+        &lt;/p&gt;
+        &lt;p&gt;
+            &lt;h3&gt;Readonly rating&lt;/h3&gt;
+            &lt;div fundoo-rating rating-value="rating" max="10" readonly="true"&gt;&lt;/div&gt;
+        &lt;/p&gt;
+        &lt;script type="text/javascript"&gt;
+            angular.module('RankingApp', [])
+                .controller('RankingController', function($scope, $window) {
+                    $scope.rating = 5;
+                    $scope.saveRatingToServer = function(rating) {
+                      $window.alert('Rating selected - ' + rating);
+                    };
+                })
+                .directive('fundooRating', function () {
+                    return {
+                        restrict: 'A',
+                        template: '&lt;ul class="rating"&gt;&lt;li ng-repeat="star in stars" ng-class="star" ng-click="toggle($index)"&gt;\u2605&lt;/li&gt;&lt;/ul&gt;',
+                        scope: {
+                            ratingValue: '=', // Accept an object
+                            max: '=',
+                            readonly: '@', // Accept a string
+                            onRatingSelected: '&amp;' // Accept a function
+                        },
+                        link: function (scope, elem, attrs) {
+                            var updateStars = function() {
+                                scope.stars = [];
+                                for (var i = 0; i &lt; scope.max; i++) {
+                                    scope.stars.push({filled: i &lt; scope.ratingValue});
+                                }
+                            };
+                            scope.toggle = function(index) {
+                                if (scope.readonly &amp;&amp; scope.readonly === 'true') return;
+                                scope.ratingValue = index + 1;
+                                scope.onRatingSelected({rating: index + 1});
+                            };
+                            scope.$watch('ratingValue', function(oldVal, newVal) {
+                                if (newVal) updateStars();
+                            });
+                        }
+                    }
+              });
+        &lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+						</code></pre>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Data from Server</h2>
+						<h4><a href="/examples/7/index.html" target="_blank">Run</a>
+					</section>
+					<section>
+						<pre><code class="html" style="max-height: 700px;">
 &lt;html ng-app='ShoppingModule'&gt;
     &lt;head&gt;&lt;title&gt;Your Shopping Cart&lt;/title&gt;&lt;/head&gt;
     &lt;body ng-controller='ShoppingController'&gt;

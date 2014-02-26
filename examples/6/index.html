@@ -1,27 +1,59 @@
-<html ng-app='ShoppingModule'>
-    <head><title>Your Shopping Cart</title></head>
-    <body ng-controller='ShoppingController'>
-        <h1>Shop!</h1>
-        <table>
-            <tr ng-repeat='item in items'>
-                <td>{{item.title}}</td>
-                <td>{{item.description}}</td>
-                <td>{{item.price | currency}}</td>
-            </tr>
-        </table>
+<html ng-app='RankingApp'>
+    <head>
+        <style>
+            .rating { color: #a9a9a9; margin: 0; padding: 0; }
+            ul.rating { display: inline-block; }
+            .rating li { list-style-type: none; display: inline-block; padding: 1px; text-align: center; font-weight: bold; cursor: pointer; }
+            .rating .filled { color: #21568b; }
+        </style>
         <script src='../js/angular.min.js'></script>
+    </head>
+    <body ng-controller='RankingController'>
+        <h1>Rating is {{rating}}</h1>
+        <p>
+            <h3>Clickable Rating</h3>
+            <div fundoo-rating rating-value="rating" max="10" on-rating-selected="saveRatingToServer(rating)"></div>
+        </p>
+        <p>
+            <h3>Readonly rating</h3>
+            <div fundoo-rating rating-value="rating" max="10" readonly="true"></div>
+        </p>
         <script type="text/javascript">
-            var ShoppingModule = angular.module('ShoppingModule', []);
-            ShoppingModule.factory('Items', function($http) {
-                return {
-                    query: function(callback) {
-                        $http.get('/shopping/items').success(callback);
+            angular.module('RankingApp', [])
+                .controller('RankingController', function($scope, $window) {
+                    $scope.rating = 5;
+                    $scope.saveRatingToServer = function(rating) {
+                      $window.alert('Rating selected - ' + rating);
+                    };
+                })
+                .directive('fundooRating', function () {
+                    return {
+                        restrict: 'A',
+                        template: '<ul class="rating"><li ng-repeat="star in stars" ng-class="star" ng-click="toggle($index)">\u2605</li></ul>',
+                        scope: {
+                            ratingValue: '=', // Accept an object
+                            max: '=',
+                            readonly: '@', // Accept a string
+                            onRatingSelected: '&' // Accept a function
+                        },
+                        link: function (scope, elem, attrs) {
+                            var updateStars = function() {
+                                scope.stars = [];
+                                for (var i = 0; i < scope.max; i++) {
+                                    scope.stars.push({filled: i < scope.ratingValue});
+                                }
+                            };
+                            scope.toggle = function(index) {
+                                if (scope.readonly && scope.readonly === 'true') return;
+                                scope.ratingValue = index + 1;
+                                scope.onRatingSelected({rating: index + 1});
+                            };
+                            scope.$watch('ratingValue', function(oldVal, newVal) {
+                                if (newVal) updateStars();
+                            });
+                        }
                     }
-                };
-            });
-            ShoppingModule.controller('ShoppingController', function($scope, Items) {
-                Items.query(function(items) { $scope.items = items; });
-            });
+              });
         </script>
     </body>
 </html>
