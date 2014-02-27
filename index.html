@@ -32,14 +32,20 @@
 					<section>
 						<h2>Hello world</h2>
 						<h4><a href="/examples/1/hello.html" target="_blank">Run</a></h4>
+                        <aside class="notes">
+                            Basic introduction
+                        </aside>
 					</section>
 					<section>
-						<h6>hello.html</h6>
-						<pre><code class="html">
+						<pre><code class="html" style="max-height: 700px;">
 &lt;html ng-app&gt;
     &lt;head&gt;
         &lt;script src="../js/angular.min.js"&gt;&lt;/script&gt;
-        &lt;script src="controller.js"&gt;&lt;/script&gt;
+        &lt;script&gt;
+        function HelloController($scope) {
+            $scope.greeting = { text: 'Hello' };
+        }
+        &lt;/script&gt;
     &lt;/head&gt;
     &lt;body&gt;
         &lt;div ng-controller='HelloController'&gt;
@@ -48,12 +54,6 @@
         &lt;/div&gt;
     &lt;/body&gt;
 &lt;/html&gt;
-						</code></pre>
-						<h6>controller.js</h6>
-						<pre><code class="javascript">
-function HelloController($scope) {
-    $scope.greeting = { text: 'Hello' };
-}
 						</code></pre>
 						<aside class="notes">
 							Controller, $scope, binding, ng-model
@@ -65,6 +65,9 @@ function HelloController($scope) {
 					<section>
 						<h2>Shopping Cart</h2>
 						<h4><a href="/examples/2/index.html" target="_blank">Run</a></h4>
+                        <aside class="notes">
+                            More interesting introduction
+                        </aside>
 					</section>
 					<section>
 						<pre><code class="html" style="max-height: 700px;">
@@ -104,6 +107,9 @@ function HelloController($scope) {
 					<section>
 						<h2>A-Mail</h2>
 						<h4><a href="/examples/3/index.html" target="_blank">Run</a></h4>
+                        <aside class="notes">
+                            A formal Angular App, router &amp; template
+                        </aside>
 					</section>
 					<section>
 						<h6>index.html</h6>
@@ -193,6 +199,9 @@ aMailServices.controller('DetailController', function($scope, $routeParams) {
 					<section>
 						<h2>Capitalize</h2>
 						<h4><a href="/examples/4/hello.html" target="_blank">Run</a></h4>
+                        <aside class="notes">
+                            Filter
+                        </aside>
 					</section>
 					<section>
 						<pre><code class="html" style="max-height: 700px;">
@@ -232,6 +241,9 @@ aMailServices.controller('DetailController', function($scope, $routeParams) {
 					<section>
 						<h2>Form</h2>
 						<h4><a href="/examples/5/index.html" target="_blank">Run</a></h4>
+                        <aside class="notes">
+                            Validator
+                        </aside>
 					</section>
 					<section>
 						<pre><code class="html" style="max-height: 700px;">
@@ -275,6 +287,9 @@ aMailServices.controller('DetailController', function($scope, $routeParams) {
 					<section>
 						<h2>Rating</h2>
 						<h4><a href="/examples/6/index.html" target="_blank">Run</a></h4>
+                        <aside class="notes">
+                            Directive
+                        </aside>
 					</section>
 					<section>
 						<pre><code class="html" style="max-height: 700px;">
@@ -344,6 +359,9 @@ aMailServices.controller('DetailController', function($scope, $routeParams) {
 					<section>
 						<h2>Fetching Data</h2>
 						<h4><a href="/examples/7/index.html" target="_blank">Run</a></h4>
+                        <aside class="notes">
+                            Factory
+                        </aside>
 					</section>
 					<section>
 						<pre><code class="html" style="max-height: 700px;">
@@ -384,6 +402,9 @@ aMailServices.controller('DetailController', function($scope, $routeParams) {
 					<section>
 						<h2>Manipulating Data</h2>
 						<h4><a href="/examples/8/index.html" target="_blank">Run</a></h4>
+                        <aside class="notes">
+                            RequireJS, Resource
+                        </aside>
 					</section>
 					<section>
 						<h6>index.html</h6>
@@ -555,7 +576,7 @@ define(['controllers/controllers', 'services/user_service'], function(controller
 });
 						</code></pre>
 						<aside class="notes">
-							$location
+							$location, restful api
 						</aside>
 					</section>
 					<section>
@@ -589,6 +610,9 @@ define(['controllers/controllers', 'services/user_service'], function(controller
     });
 });
 						</code></pre>
+                        <aside class="notes">
+                            restful api
+                        </aside>
 					</section>
 				</section>
 				<section>
